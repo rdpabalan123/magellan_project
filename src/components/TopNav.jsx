@@ -23,38 +23,39 @@ export default function TopNav() {
   return (
     <header
       className="bg-white/5 backdrop-blur sticky top-0 z-30"
-      style={{ paddingLeft: '24px', paddingRight: '24px' }}
+      style={{ paddingLeft: '16px', paddingRight: '16px' }}
     >
       <div
         className="max-w-7xl mx-auto"
-        style={{ paddingLeft: '24px', paddingRight: '24px' }}
+        style={{ paddingLeft: '16px', paddingRight: '16px' }}
       >
         <div
           className="flex justify-between items-center"
-          style={{ height: '120px' }}
+          style={{ height: '80px' }}
         >
           <div className="flex items-center">
             <Link
               to="/"
               className="flex items-center flex-shrink-0"
-              style={{ height: '120px', width: '160px', margin: 0, padding: 0 }}
+              style={{ height: '80px', width: '120px', margin: 0, padding: 0 }}
             >
               <img
                 src="/images/Car Financing Logo.png"
                 alt="Magellan Logo"
                 style={{
-                  height: '120px',
+                  height: '140px',
                   width: 'auto',
                   objectFit: 'contain',
                   display: 'block',
                   margin: 0,
                   padding: 0,
+                  backgroundColor: 'transparent',
                 }}
               />
             </Link>
 
             <nav
-              className="hidden md:flex gap-6 items-center relative ml-8 font-bold text-lg"
+              className="hidden md:flex gap-6 items-center relative ml-4 font-bold text-lg"
               ref={financeRef}
               style={{ color: 'var(--text)' }}
             >
@@ -99,14 +100,14 @@ export default function TopNav() {
                     <Link
                       to="/finance/calculator"
                       onClick={() => setFinanceOpen(false)}
-                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-white"
+                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-black"
                     >
                       Cost Calculator
                     </Link>
                     <Link
                       to="/finance"
                       onClick={() => setFinanceOpen(false)}
-                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-white"
+                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-black"
                     >
                       Finance Application
                     </Link>
@@ -114,7 +115,7 @@ export default function TopNav() {
                 )}
               </div>
 
-              <Link to="/client" className="px-3 py-1 rounded hover:bg-white/5">
+              <Link to="/client" className="px-3 py-1 rounded hover:bg-black/5">
                 Client Portal
               </Link>
               <Link to="/company" className="px-3 py-1 rounded hover:bg-white/5">

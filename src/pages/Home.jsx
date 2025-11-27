@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
+import {
+  CheckCircleIcon,
+  ClockIcon,
+  UserCircleIcon,
+} from '@heroicons/react/24/outline'
 
 export default function Home() {
   // -----------------------------
@@ -7,36 +12,36 @@ export default function Home() {
   // -----------------------------
   const categories = ["SUV", "Sedan", "MPV", "Pickup"]
 
-  const carData = {
-    SUV: [
-      { name: "Nissan Terra", img: "https://img.philkotse.com/2021/12/22/xjKXoNhA/nissan-terra-2022-philippines-3a22.jpg", description: "A robust SUV with premium features and excellent off-road capabilities." },
-      { name: "Jeep Wrangler", img: "https://www.jeep.com/content/dam/fca-brands/na/jeep/en_us/2023/wrangler/gallery/exterior/2023-jeep-wrangler-gallery-exterior-1.jpg", description: "Iconic rugged design built for adventure and durability." },
-      { name: "Hyundai Storia", img: "https://imgd.aeplcdn.com/1056x594/n/cw/ec/50727/staria-exterior-right-front-three-quarter.jpeg", description: "Spacious and modern SUV with advanced tech features." },
-      { name: "Suzuki Ignis", img: "https://www.suzuki.co.za/hubfs/Ignis%20-%20Glistening%20Grey%20Metallic.png", description: "Compact yet versatile, perfect for urban driving." }
-    ],
-    Sedan: [
-      { name: "Suzuki Ciaz", img: "https://www.autodeal.com.ph/custom/car-model-photo/original/2022-suzuki-ciaz-front-quarter-philippines-60e7cc4701283.jpg", description: "Elegant sedan with excellent fuel efficiency and comfort." },
-      { name: "Suzuki Dzire", img: "https://www.autodeal.com.ph/custom/car-model-photo/original/suzuki-dzire-637b2efcc7f9b.jpg", description: "Reliable and affordable sedan with modern styling." },
-      { name: "Nissan Almera", img: "https://www-nissan-cdn.net/content/dam/Nissan/th/vehicles/VLP/almera-my23/new/spec/vl-spec.jpg", description: "Spacious interior and smooth ride for daily driving." },
-      { name: "Suzuki Swift", img: "https://img.philkotse.com/2019/04/23/f8koe8lq/suzuki-swift-2019-ra-philippines-29bd.jpg", description: "Sporty compact sedan with peppy performance." }
-    ],
-    MPV: [
-      { name: "Toyota Avanza (Sample)", img: "https://imgd.aeplcdn.com/1056x594/n/cw/ec/145259/avanza-exterior-right-front-three-quarter.jpeg", description: "Practical MPV with seating for the whole family." },
-      { name: "Suzuki Ertiga (Sample)", img: "https://images.suzuki.co.id/storage/index/ertiga/5.png", description: "Comfortable and spacious with advanced safety features." }
-    ],
-    Pickup: [
-      { name: "Toyota Hilux", img: "https://www.toyota.com/imgix/responsive/images/gallery/photos-v2/2025/hilux/2025-toyota-hilux-001.jpg", description: "Powerful pickup with great payload and towing capacity." },
-      { name: "Nissan Navara", img: "https://www.nissan.ph/content/dam/Nissan/asia/philippines/vehicles/navara/overview/2021/navara-hero.png", description: "Durable and efficient pickup designed for tough jobs." }
-    ]
-  }
+    const carData = {
+        SUV: [
+            { name: "Nissan Terra", img: "/images/nissan-terra.jpg", description: "A robust SUV with premium features and excellent off-road capabilities." },
+            { name: "Jeep Wrangler", img: "/images/jeep-wrangler.jpg", description: "Iconic rugged design built for adventure and durability." },
+            { name: "Hyundai Storia", img: "/images/hyundai-storia.jpg", description: "Spacious and modern SUV with advanced tech features." },
+            { name: "Suzuki Ignis", img: "/images/suzuki-ignis.jpg", description: "Compact yet versatile, perfect for urban driving." }
+        ],
+        Sedan: [
+            { name: "Suzuki Ciaz", img: "/images/suzuki-ciaz.jpg", description: "Elegant sedan with excellent fuel efficiency and comfort." },
+            { name: "Suzuki Dzire", img: "/images/suzuki-dzire.jpg", description: "Reliable and affordable sedan with modern styling." },
+            { name: "Nissan Almera", img: "/images/nissan-almera.jpg", description: "Spacious interior and smooth ride for daily driving." },
+            { name: "Suzuki Swift", img: "/images/suzuki-swift.jpg", description: "Sporty compact sedan with peppy performance." }
+        ],
+        MPV: [
+            { name: "Toyota Avanza (Sample)", img: "/images/toyota-avanza.jpg", description: "Practical MPV with seating for the whole family." },
+            { name: "Suzuki Ertiga (Sample)", img: "/images/suzuki-ertiga.jpg", description: "Comfortable and spacious with advanced safety features." }
+        ],
+        Pickup: [
+            { name: "Toyota Hilux", img: "/images/toyota-hilux.jpg", description: "Powerful pickup with great payload and towing capacity." },
+            { name: "Nissan Navara", img: "/images/nissan-navara.jpg", description: "Durable and efficient pickup designed for tough jobs." }
+        ]
+    }
 
   // -----------------------------
   // HERO BANNER SLIDESHOW
   // -----------------------------
   const carouselImages = [
-    "https://global.toyota/pages/models/fortuner/grade/fortuner.png",
-    "https://global.honda/content/dam/central/cars/city/og_image.jpg",
-    "https://imgd.aeplcdn.com/0x0/n/cw/ec/142695/innova-hycross-exterior-right-front-three-quarter.jpeg"
+    "/images/carbanner_1.jpg",
+    "/images/carbanner_2.jpg",
+    "/images/carbanner_3.jpg"
   ]
 
   // States
@@ -45,8 +50,6 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("SUV")
   const [modalCar, setModalCar] = useState(null)
   const [textFade, setTextFade] = useState(false)
-
-//   const categories = ["SUV", "Sedan", "MPV", "Pickup"]
 
   // For managing auto slide interval & manual controls
   const intervalRef = useRef(null)
@@ -113,15 +116,16 @@ export default function Home() {
         <div className="space-y-10 relative">
 
           {/* HERO CAROUSEL */}
-          <section className="relative w-full h-72 rounded-xl overflow-hidden shadow-lg select-none">
+          <section className="relative w-full max-w-[900px] h-[320px] rounded-xl overflow-hidden shadow-lg select-none mx-auto">
             <img
               src={carouselImages[banner]}
               alt="Car Banner"
-              className={`w-full h-full object-contain transition-opacity duration-700 ${
+              className={`w-full h-full object-cover transition-opacity duration-700 ${
                 fadeBanner ? "opacity-0" : "opacity-100"
               }`}
-              onError={(e) => (e.target.src = "https://via.placeholder.com/1200x400?text=Car+Banner")}
+              onError={(e) => (e.target.src = "/images/placeholder_banner.png")}
               draggable={false}
+              style={{ imageRendering: "auto" }}
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -132,10 +136,10 @@ export default function Home() {
               } transition-all duration-700 ease-in-out`}
             >
               <h1 className="text-3xl font-extrabold text-white drop-shadow-lg">
-                Find Your Dream Car
+                Let Magellan Finance Help you Own your Dream Car
               </h1>
               <p className="text-sm text-slate-300 mt-1">
-                Fast Approval • Easy Financing • Trusted by Clients
+                Wide Choices • Trusted by Clients • Fast and Easy Financing
               </p>
             </div>
 
@@ -168,7 +172,7 @@ export default function Home() {
                   key={i}
                   aria-label={`Slide ${i + 1}`}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    i === banner ? "bg-blue-400" : "bg-white/40 hover:bg-white"
+                    i === banner ? "bg-white" : "bg-white/40 hover:bg-white"
                   }`}
                   onClick={() => {
                     selectSlide(i)
@@ -179,15 +183,99 @@ export default function Home() {
             </div>
           </section>
 
+          {/* ==========================
+              ABOUT US + WHY CHOOSE US
+          =========================== */}
+          <section className="max-w-[900px] mx-auto mt-10 px-4 select-text">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-lg">
+              <h2 className="text-2xl font-extrabold mb-3 text-white drop-shadow">
+                About Us
+              </h2>
+
+              <p className="text-slate-300 leading-relaxed text-sm">
+                Magellan Financial Services is committed to helping every individual own their dream car through
+                transparent, reliable, and customer-focused financing solutions.  
+                Our goal is to make the car financing process fast, simple, and stress-free—empowering clients with
+                flexible options and expert guidance every step of the way.
+              </p>
+
+              {/* CEO STATEMENT (PENDING) */}
+              <div className="mt-6 bg-white/5 p-4 rounded-lg border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Statement of the CEO <span className="text-white-400 text-xs">(Pending)</span>
+                </h3>
+                <p className="text-white-400 text-sm italic">
+                  *CEO’s statement will be added soon.*
+                </p>
+              </div>
+
+              {/* WHY CHOOSE US */}
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-white mb-6">Why Choose Us?</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    {
+                      title: 'Easy',
+                      description: 'We simplify the process so you can get approved quickly with minimal requirements.',
+                      Icon: CheckCircleIcon,
+                    },
+                    {
+                      title: 'Convenient',
+                      description: 'Everything can be processed online or through our support team—fast, smooth, and hassle-free.',
+                      Icon: ClockIcon,
+                    },
+                    {
+                      title: 'Personalized',
+                      description: 'We tailor financing solutions to match your lifestyle, needs, and budget.',
+                      Icon: UserCircleIcon,
+                    },
+                  ].map(({ title, description, Icon }, index) => (
+                    <div
+                      key={title}
+                      className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition cursor-default
+                                 opacity-0 translate-y-8 animate-fade-slide-in"
+                      style={{ animationDelay: `${index * 200}ms`, animationFillMode: "forwards" }}
+                    >
+                      <Icon className="h-8 w-8 text-white-400 mb-3" />
+                      <h4 className="font-semibold text-white-400 mb-2">{title}</h4>
+                      <p className="text-white-300 text-sm">{description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <style>{`
+              @keyframes fadeSlideIn {
+                from {
+                  opacity: 0;
+                  transform: translateY(20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+
+              .animate-fade-slide-in {
+                animation-name: fadeSlideIn;
+                animation-duration: 600ms;
+                animation-timing-function: ease-out;
+                animation-fill-mode: forwards;
+              }
+            `}</style>
+          </section>
+
           {/* CATEGORY TABS */}
           <section>
-            <div className="flex gap-4 border-b border-white/20 pb-2 select-none">
+            <div className="flex gap-4 border-b border-white/20 pb-2 select-none max-w-[900px] mx-auto">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   className={`px-4 py-2 rounded-t-lg text-sm font-semibold transition-colors ${
                     activeCategory === cat
-                      ? "text-blue-400 border-b-2 border-blue-400"
+                      ? "text-white-400 border-b-2 border-white-400"
                       : "text-white/60 hover:text-white"
                   }`}
                   onClick={() => {
@@ -205,7 +293,7 @@ export default function Home() {
           </section>
 
           {/* CAR GRID */}
-          <section className="grid grid-cols-2 md:grid-cols-4 gap-6 select-none">
+          <section className="grid grid-cols-2 md:grid-cols-4 gap-6 select-none max-w-[900px] mx-auto">
             {carData[activeCategory].map((car, i) => (
               <div
                 key={i}
@@ -231,13 +319,19 @@ export default function Home() {
             ))}
           </section>
 
-          {/* CONTACT */}
-          <section className="card p-6 mt-10 select-text">
+            {/* CONTACT */}
+            <section
+            className="p-6 mt-10 select-text max-w-[900px] mx-auto"
+            style={{ backgroundColor: "transparent" }}
+            >
             <h2 className="text-xl font-bold">Contact Us</h2>
             <p className="text-sm mt-2">
-              Email: info@magellan.com | Phone: (02) 1234-5678
+                Address: Magellan Financial Services, Ltd. <br />
+                1063 Leeward Highway, Providenciales <br />
+                Turks and Caicos Islands, TKCA1ZZ <br />
+                Email: customerservice@magellanfinancialservices.tc | Phone: +1649 232 6211
             </p>
-          </section>
+            </section>
         </div>
       </DashboardLayout>
 
