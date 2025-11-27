@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
 export default function TopNav() {
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   const [financeOpen, setFinanceOpen] = useState(false);
   const financeRef = useRef(null);
@@ -20,25 +21,21 @@ export default function TopNav() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  console.log('Current User:', user); // Debugging user object
+
   return (
-    <header
-      className="bg-white/5 backdrop-blur sticky top-0 z-30"
-      style={{ paddingLeft: '16px', paddingRight: '16px' }}
-    >
-      <div
-        className="max-w-7xl mx-auto"
-        style={{ paddingLeft: '16px', paddingRight: '16px' }}
-      >
-        <div
-          className="flex justify-between items-center"
-          style={{ height: '80px' }}
-        >
+    <header className="bg-white/5 backdrop-blur sticky top-0 z-30">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-20">
+          {/* LEFT SIDE */}
           <div className="flex items-center">
-            <Link
-              to="/"
-              className="flex items-center flex-shrink-0"
-              style={{ height: '80px', width: '120px', margin: 0, padding: 0 }}
-            >
+            {/* LOGO */}
+            <Link to="/" className="flex items-center flex-shrink-0">
               <img
                 src="/images/Car Financing Logo.png"
                 alt="Magellan Logo"
@@ -46,68 +43,61 @@ export default function TopNav() {
                   height: '140px',
                   width: 'auto',
                   objectFit: 'contain',
-                  display: 'block',
-                  margin: 0,
-                  padding: 0,
-                  backgroundColor: 'transparent',
                 }}
               />
             </Link>
 
+            {/* NAV MENU */}
             <nav
               className="hidden md:flex gap-6 items-center relative ml-4 font-bold text-lg"
               ref={financeRef}
               style={{ color: 'var(--text)' }}
             >
+              {/* Always visible */}
               <Link to="/" className="px-3 py-1 rounded hover:bg-white/5">
                 Home
               </Link>
 
-              {/* Wrap Finance button in relative div */}
+              {/* FINANCE DROPDOWN */}
               <div className="relative">
                 <button
                   onClick={() => setFinanceOpen(!financeOpen)}
                   className="px-3 py-1 rounded hover:bg-white/5 flex items-center gap-1"
-                  aria-haspopup="true"
-                  aria-expanded={financeOpen}
-                  type="button"
                 >
                   Finance
                   <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
+                    className={`w-4 h-4 transition-transform ${
                       financeOpen ? 'rotate-180' : 'rotate-0'
                     }`}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
                   >
                     <path
+                      d="M19 9l-7 7-7-7"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
                     />
                   </svg>
                 </button>
 
                 {financeOpen && (
                   <div
-                    className="absolute bg-panel rounded shadow-md w-48 ring-1 ring-black ring-opacity-5 z-20"
+                    className="absolute bg-panel w-48 rounded shadow-md z-20 ring-1 ring-black ring-opacity-5"
                     style={{ top: '100%', left: 0 }}
                   >
                     <Link
                       to="/finance/calculator"
                       onClick={() => setFinanceOpen(false)}
-                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-black"
+                      className="block px-4 py-2 text-sm hover:bg-sky-600 hover:text-black"
                     >
                       Cost Calculator
                     </Link>
                     <Link
                       to="/finance"
                       onClick={() => setFinanceOpen(false)}
-                      className="block px-4 py-2 text-sm text-text hover:bg-sky-600 hover:text-black"
+                      className="block px-4 py-2 text-sm hover:bg-sky-600 hover:text-black"
                     >
                       Finance Application
                     </Link>
@@ -115,21 +105,28 @@ export default function TopNav() {
                 )}
               </div>
 
-              <Link to="/client" className="px-3 py-1 rounded hover:bg-black/5">
-                Client Portal
-              </Link>
-              <Link to="/company" className="px-3 py-1 rounded hover:bg-white/5">
-                Company Portal
-              </Link>
+              {/* ROLE-BASED MENUS */}
+              {(user?.role === 'client' || user?.role === 'user') && (
+                <Link to="/client" className="px-3 py-1 rounded hover:bg-white/5">
+                  Client Portal
+                </Link>
+              )}
+
+              {user?.role === 'admin' && (
+                <Link to="/company" className="px-3 py-1 rounded hover:bg-white/5">
+                  Company Portal
+                </Link>
+              )}
             </nav>
           </div>
 
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-4 font-bold text-lg">
             {user ? (
               <>
                 <div className="text-sm">{user.email}</div>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="px-4 py-1 rounded bg-red-600 text-white text-sm"
                 >
                   Logout

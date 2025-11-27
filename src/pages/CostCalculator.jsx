@@ -180,7 +180,7 @@ export default function CostCalculator() {
                     <div className={`font-semibold text-lg ${isDarkTheme ? 'text-white' : 'text-black'}`}>
                       {vehicle ? vehicle.name : 'No vehicle selected'}
                     </div>
-                    <div className="text-sky-600 font-bold">${vehicleValue.toLocaleString()}</div>
+                    <div className="text-white-600 font-bold">${vehicleValue.toLocaleString()}</div>
                   </div>
                 </div>
               </div>
@@ -269,7 +269,7 @@ export default function CostCalculator() {
                       <label className={labelClass}>Admin Fee</label>
                       <input
                         type="number"
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-bg text-black cursor-not-allowed"
+                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-white text-black cursor-not-allowed"
                         value={adminFee}
                         disabled
                       />

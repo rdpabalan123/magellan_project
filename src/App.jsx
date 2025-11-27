@@ -12,6 +12,9 @@ import ClientPortal from './pages/ClientPortal'
 import CompanyPortal from './pages/CompanyPortal'
 import Invoices from './pages/Invoices'
 import Login from './pages/auth/Login'
+import Register from './pages/auth/register'
+
+
 
 
 export default function App(){
@@ -30,7 +33,7 @@ export default function App(){
                     <Route path="/dashboard" element={<Dashboard/>} />
                     <Route path="/invoices" element={<Invoices/>} />
 
-
+                    <Route path="/register" element={<Register />} />
                     <Route path="*" element={<Navigate to='/' />} />
                 </Routes>
             </ThemeProvider>
