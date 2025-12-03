@@ -17,8 +17,8 @@ export default function CRMSidebar() {
     { to: '/company', label: '🏢 Company Portal Home' },
     { to: '/company/applications', label: '📄 All Applications' },
     { to: '/company/invoices', label: '🧾 All Invoices' },
-    { to: '/company/outstanding', label: '📌 Outstanding Invoices' },
-    { to: '/company/near-due', label: '⚠️ Near Due Notices' },
+    // { to: '/company/outstanding', label: '📌 Outstanding Invoices' },
+    // { to: '/company/near-due', label: '⚠️ Near Due Notices' },
     { to: '/company/summary', label: '📊 Client Summary' },
     { to: '/company/notifications', label: '🔔 Notifications' },
   ];

@@ -17,6 +17,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/register';
 
 import DashboardLayout from './layouts/DashboardLayout';
+import CompanyDashboard from './pages/CompanyDashboard';
 
 export default function App() {
   return (
@@ -37,7 +38,7 @@ export default function App() {
               </DashboardLayout>
             }
           >
-            <Route index element={<CompanyPortalHome />} />
+            <Route index element={<CompanyDashboard />} />
             <Route path="applications" element={<ApplicationsWrapper />} />
             <Route path="invoices" element={<InvoicesModule />} />
             <Route path="summary" element={<InvoiceSummary />} />
