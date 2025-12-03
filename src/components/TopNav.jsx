@@ -26,14 +26,16 @@ export default function TopNav() {
     navigate('/');
   };
 
-  console.log('Current User:', user); // Debugging user object
+  console.log('Current User:', user);
 
   return (
     <header className="bg-white/5 backdrop-blur sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-20">
+
           {/* LEFT SIDE */}
           <div className="flex items-center">
+
             {/* LOGO */}
             <Link to="/" className="flex items-center flex-shrink-0">
               <img
@@ -53,6 +55,7 @@ export default function TopNav() {
               ref={financeRef}
               style={{ color: 'var(--text)' }}
             >
+
               {/* Always visible */}
               <Link to="/" className="px-3 py-1 rounded hover:bg-white/5">
                 Home
@@ -66,19 +69,13 @@ export default function TopNav() {
                 >
                   Finance
                   <svg
-                    className={`w-4 h-4 transition-transform ${
-                      financeOpen ? 'rotate-180' : 'rotate-0'
-                    }`}
+                    className={`w-4 h-4 transition-transform ${financeOpen ? 'rotate-180' : 'rotate-0'}`}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      d="M19 9l-7 7-7-7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
 
@@ -105,17 +102,34 @@ export default function TopNav() {
                 )}
               </div>
 
-              {/* ROLE-BASED MENUS */}
-              {(user?.role === 'client' || user?.role === 'user') && (
+              {/* ===================== */}
+              {/*   ROLE-BASED MENUS   */}
+              {/* ===================== */}
+
+              {/* USER / CLIENT */}
+              {["user", "client"].includes(user?.role) && (
                 <Link to="/client" className="px-3 py-1 rounded hover:bg-white/5">
                   Client Portal
                 </Link>
               )}
 
-              {user?.role === 'admin' && (
+              {/* ADMIN */}
+              {user?.role === "admin" && (
                 <Link to="/company" className="px-3 py-1 rounded hover:bg-white/5">
                   Company Portal
                 </Link>
+              )}
+
+              {/* DEV — sees everything */}
+              {user?.role === "dev" && (
+                <>
+                  <Link to="/client" className="px-3 py-1 rounded hover:bg-white/5">
+                    Client Portal
+                  </Link>
+                  <Link to="/company" className="px-3 py-1 rounded hover:bg-white/5">
+                    Company Portal
+                  </Link>
+                </>
               )}
             </nav>
           </div>
@@ -124,7 +138,9 @@ export default function TopNav() {
           <div className="flex items-center gap-4 font-bold text-lg">
             {user ? (
               <>
-                <div className="text-sm">{user.email}</div>
+                <div className="text-sm">
+                  {user.email} <span className="text-xs text-gray-400">({user.role})</span>
+                </div>
                 <button
                   onClick={handleLogout}
                   className="px-4 py-1 rounded bg-red-600 text-white text-sm"
@@ -141,6 +157,7 @@ export default function TopNav() {
               </Link>
             )}
           </div>
+
         </div>
       </div>
     </header>

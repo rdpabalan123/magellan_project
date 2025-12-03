@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const submit = e => {
+  const submit = (e) => {
     e.preventDefault();
-    if (!email || !password) return alert('Please enter email and password');
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const foundUser = users.find(u => u.email === email && u.password === password);
-
-    if (!foundUser) {
-      alert('Invalid email or password');
+    if (!email || !password) {
+      alert("Please enter email and password");
       return;
     }
 
-    login({ email: foundUser.email, role: foundUser.role });
-    
+    const res = login(email, password); // CALL AUTHCONTEXT
+
+    if (!res.success) {
+      alert(res.message);
+      return;
+    }
+
+    const user = res.user;
+
     // Redirect based on role
-    if (foundUser.role === 'admin' || foundUser.role === 'dev') {
-      navigate('/company');
-    } else if (foundUser.role === 'client') {
-      navigate('/client');
+    if (user.role === "admin" || user.role === "dev") {
+      navigate("/company");
+    } else if (user.role === "client") {
+      navigate("/client");
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -40,7 +43,7 @@ export default function Login() {
           className="input"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           type="email"
           required
         />
@@ -48,16 +51,22 @@ export default function Login() {
           className="input"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           type="password"
           required
         />
         <div className="flex justify-end">
-          <button className="px-4 py-2 bg-sky-600 text-white rounded">Log In</button>
+          <button className="px-4 py-2 bg-sky-600 text-white rounded">
+            Log In
+          </button>
         </div>
       </form>
       <p className="mt-4 text-center">
-        Don't have an account? <Link to="/register" className="text-sky-600">Register here</Link>
+        Don't have an account?
+        <Link to="/register" className="text-sky-600">
+          {" "}
+          Register here
+        </Link>
       </p>
     </div>
   );
