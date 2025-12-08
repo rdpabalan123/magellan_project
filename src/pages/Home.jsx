@@ -4,6 +4,9 @@ import {
   CheckCircleIcon,
   ClockIcon,
   UserCircleIcon,
+  ShieldCheckIcon,
+  MapPinIcon,
+  BoltIcon,
 } from '@heroicons/react/24/outline'
 
 export default function Home() {
@@ -12,28 +15,28 @@ export default function Home() {
   // -----------------------------
   const categories = ["SUV", "Sedan", "MPV", "Pickup"]
 
-    const carData = {
-        SUV: [
-            { name: "Nissan Terra", img: "/images/nissan-terra.jpg", description: "A robust SUV with premium features and excellent off-road capabilities." },
-            { name: "Jeep Wrangler", img: "/images/jeep-wrangler.jpg", description: "Iconic rugged design built for adventure and durability." },
-            { name: "Hyundai Storia", img: "/images/hyundai-storia.jpg", description: "Spacious and modern SUV with advanced tech features." },
-            { name: "Suzuki Ignis", img: "/images/suzuki-ignis.jpg", description: "Compact yet versatile, perfect for urban driving." }
-        ],
-        Sedan: [
-            { name: "Suzuki Ciaz", img: "/images/suzuki-ciaz.jpg", description: "Elegant sedan with excellent fuel efficiency and comfort." },
-            { name: "Suzuki Dzire", img: "/images/suzuki-dzire.jpg", description: "Reliable and affordable sedan with modern styling." },
-            { name: "Nissan Almera", img: "/images/nissan-almera.jpg", description: "Spacious interior and smooth ride for daily driving." },
-            { name: "Suzuki Swift", img: "/images/suzuki-swift.jpg", description: "Sporty compact sedan with peppy performance." }
-        ],
-        MPV: [
-            { name: "Toyota Avanza (Sample)", img: "/images/toyota-avanza.jpg", description: "Practical MPV with seating for the whole family." },
-            { name: "Suzuki Ertiga (Sample)", img: "/images/suzuki-ertiga.jpg", description: "Comfortable and spacious with advanced safety features." }
-        ],
-        Pickup: [
-            { name: "Toyota Hilux", img: "/images/toyota-hilux.jpg", description: "Powerful pickup with great payload and towing capacity." },
-            { name: "Nissan Navara", img: "/images/nissan-navara.jpg", description: "Durable and efficient pickup designed for tough jobs." }
-        ]
-    }
+  const carData = {
+    SUV: [
+      { name: "Nissan Terra", img: "/images/nissan-terra.jpg", description: "A robust SUV with premium features and excellent off-road capabilities." },
+      { name: "Jeep Wrangler", img: "/images/jeep-wrangler.jpg", description: "Iconic rugged design built for adventure and durability." },
+      { name: "Hyundai Storia", img: "/images/hyundai-storia.jpg", description: "Spacious and modern SUV with advanced tech features." },
+      { name: "Suzuki Ignis", img: "/images/suzuki-ignis.jpg", description: "Compact yet versatile, perfect for urban driving." }
+    ],
+    Sedan: [
+      { name: "Suzuki Ciaz", img: "/images/suzuki-ciaz.jpg", description: "Elegant sedan with excellent fuel efficiency and comfort." },
+      { name: "Suzuki Dzire", img: "/images/suzuki-dzire.jpg", description: "Reliable and affordable sedan with modern styling." },
+      { name: "Nissan Almera", img: "/images/nissan-almera.jpg", description: "Spacious interior and smooth ride for daily driving." },
+      { name: "Suzuki Swift", img: "/images/suzuki-swift.jpg", description: "Sporty compact sedan with peppy performance." }
+    ],
+    MPV: [
+      { name: "Toyota Avanza (Sample)", img: "/images/toyota-avanza.jpg", description: "Practical MPV with seating for the whole family." },
+      { name: "Suzuki Ertiga (Sample)", img: "/images/suzuki-ertiga.jpg", description: "Comfortable and spacious with advanced safety features." }
+    ],
+    Pickup: [
+      { name: "Toyota Hilux", img: "/images/toyota-hilux.jpg", description: "Powerful pickup with great payload and towing capacity." },
+      { name: "Nissan Navara", img: "/images/nissan-navara.jpg", description: "Durable and efficient pickup designed for tough jobs." }
+    ]
+  }
 
   // -----------------------------
   // HERO BANNER SLIDESHOW
@@ -51,10 +54,8 @@ export default function Home() {
   const [modalCar, setModalCar] = useState(null)
   const [textFade, setTextFade] = useState(false)
 
-  // For managing auto slide interval & manual controls
   const intervalRef = useRef(null)
 
-  // Function to start the slideshow interval
   const startInterval = () => {
     if (intervalRef.current) clearInterval(intervalRef.current)
     intervalRef.current = setInterval(() => {
@@ -67,7 +68,6 @@ export default function Home() {
     return () => clearInterval(intervalRef.current)
   }, [banner, activeCategory])
 
-  // Slide next function with fade effect
   const slideNext = () => {
     setFadeBanner(true)
     setTextFade(true)
@@ -82,7 +82,6 @@ export default function Home() {
     }, 600)
   }
 
-  // Slide prev function with fade effect
   const slidePrev = () => {
     setFadeBanner(true)
     setTextFade(true)
@@ -97,9 +96,8 @@ export default function Home() {
     }, 600)
   }
 
-  // Manually select bullet slide
   const selectSlide = (index) => {
-    if(index === banner) return
+    if (index === banner) return
     setFadeBanner(true)
     setTextFade(true)
     setTimeout(() => {
@@ -125,7 +123,6 @@ export default function Home() {
               }`}
               onError={(e) => (e.target.src = "/images/placeholder_banner.png")}
               draggable={false}
-              style={{ imageRendering: "auto" }}
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -143,14 +140,14 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Left/Right Controls */}
+            {/* LEFT / RIGHT CONTROLS */}
             <button
               aria-label="Previous Slide"
               onClick={() => {
                 slidePrev()
                 startInterval()
               }}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-2 transition"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-2 transition"
             >
               &#10094;
             </button>
@@ -160,13 +157,13 @@ export default function Home() {
                 slideNext()
                 startInterval()
               }}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-2 transition"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-2 transition"
             >
               &#10095;
             </button>
 
-            {/* Bullet Indicators */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
+            {/* BULLETS */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3">
               {carouselImages.map((_, i) => (
                 <button
                   key={i}
@@ -184,85 +181,106 @@ export default function Home() {
           </section>
 
           {/* ==========================
-              ABOUT US + WHY CHOOSE US
+              UPDATED ABOUT US (2-COLUMN, ANIMATED)
           =========================== */}
           <section className="max-w-[900px] mx-auto mt-10 px-4 select-text">
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-extrabold mb-3 text-white drop-shadow">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-lg animate-fade-in">
+
+              <h2 className="text-2xl font-extrabold mb-6 text-white drop-shadow">
                 About Us
               </h2>
 
-              <p className="text-slate-300 leading-relaxed text-sm">
-                Magellan Financial Services is committed to helping every individual own their dream car through
-                transparent, reliable, and customer-focused financing solutions.  
-                Our goal is to make the car financing process fast, simple, and stress-free—empowering clients with
-                flexible options and expert guidance every step of the way.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-              {/* CEO STATEMENT (PENDING) */}
-              <div className="mt-6 bg-white/5 p-4 rounded-lg border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Statement of the CEO <span className="text-white-400 text-xs">(Pending)</span>
-                </h3>
-                <p className="text-white-400 text-sm italic">
-                  *CEO’s statement will be added soon.*
-                </p>
-              </div>
+                {/* LEFT COLUMN */}
+                <div className="space-y-4 text-slate-300 leading-relaxed text-sm">
 
-              {/* WHY CHOOSE US */}
-              <div className="mt-8">
-                <h3 className="text-xl font-bold text-white mb-6">Why Choose Us?</h3>
+                  <p className="font-semibold text-white text-lg">
+                    About Magellan Financial Services
+                  </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <p>
+                    <strong>Our Vision: Fueling Prosperity in the Turks and Caicos Islands</strong><br />
+                    At Magellan Financial Services, we believe that the vibrant economy of the Turks and Caicos Islands (TCI) 
+                    deserves financial solutions that are as dynamic and forward-thinking as its people.
+                  </p>
+
+                  <p>
+                    We are a locally focused financial services provider committed to supporting the growth of businesses 
+                    and individuals across Providenciales, Grand Turk, and all the islands of the TCI.
+                  </p>
+
+                  <p className="font-semibold text-white">Why Choose Leasing with Magellan?</p>
+
+                  <p>
+                    We remove the large upfront capital barrier, enabling businesses and individuals to acquire needed assets sooner.
+                  </p>
+
+                  <p>
+                    Magellan specializes in structured leasing & financing solutions for vehicles, fleets, and equipment.
+                  </p>
+                </div>
+
+                {/* RIGHT COLUMN - COMMITMENT BOXES */}
+                <div className="space-y-4">
+
                   {[
                     {
-                      title: 'Easy',
-                      description: 'We simplify the process so you can get approved quickly with minimal requirements.',
-                      Icon: CheckCircleIcon,
+                      icon: MapPinIcon,
+                      title: "Local Focus",
+                      text: "We understand local regulations, markets, and the unique business environment of TCI."
                     },
                     {
-                      title: 'Convenient',
-                      description: 'Everything can be processed online or through our support team—fast, smooth, and hassle-free.',
-                      Icon: ClockIcon,
+                      icon: BoltIcon,
+                      title: "Speed",
+                      text: "Fast approvals and a streamlined process to get your assets delivered quickly."
                     },
                     {
-                      title: 'Personalized',
-                      description: 'We tailor financing solutions to match your lifestyle, needs, and budget.',
-                      Icon: UserCircleIcon,
+                      icon: ShieldCheckIcon,
+                      title: "Transparency",
+                      text: "Clear terms, simple documentation, and no hidden fees—trust is our foundation."
                     },
-                  ].map(({ title, description, Icon }, index) => (
+                    {
+                      icon: UserCircleIcon,
+                      title: "Flexibility",
+                      text: "Leasing structured around your seasonal cash flow and business cycle."
+                    },
+                  ].map((item, i) => (
                     <div
-                      key={title}
-                      className="bg-white/5 rounded-lg p-6 border border-white/10 hover:bg-white/10 transition cursor-default
-                                 opacity-0 translate-y-8 animate-fade-slide-in"
-                      style={{ animationDelay: `${index * 200}ms`, animationFillMode: "forwards" }}
+                      key={i}
+                      className="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-4 items-start 
+                                 transform opacity-0 translate-y-4 animate-fade-slide"
+                      style={{ animationDelay: `${i * 0.2}s` }}
                     >
-                      <Icon className="h-8 w-8 text-white-400 mb-3" />
-                      <h4 className="font-semibold text-white-400 mb-2">{title}</h4>
-                      <p className="text-white-300 text-sm">{description}</p>
+                      <item.icon className="h-8 w-8 text-white" />
+                      <div>
+                        <h4 className="text-white font-semibold">{item.title}</h4>
+                        <p className="text-slate-300 text-sm">{item.text}</p>
+                      </div>
                     </div>
                   ))}
+
                 </div>
+
               </div>
+
             </div>
 
+            {/* ANIMATION KEYFRAMES */}
             <style>{`
-              @keyframes fadeSlideIn {
-                from {
-                  opacity: 0;
-                  transform: translateY(20px);
-                }
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
+              @keyframes fadeSlide {
+                0% { opacity: 0; transform: translateY(20px); }
+                100% { opacity: 1; transform: translateY(0); }
               }
-
-              .animate-fade-slide-in {
-                animation-name: fadeSlideIn;
-                animation-duration: 600ms;
-                animation-timing-function: ease-out;
-                animation-fill-mode: forwards;
+              .animate-fade-slide {
+                animation: fadeSlide 0.6s ease-out forwards;
+              }
+              @keyframes fadeInCenter {
+                0% { opacity: 0; transform: scale(0.98); }
+                100% { opacity: 1; transform: scale(1); }
+              }
+              .animate-fade-in {
+                animation: fadeInCenter 0.6s ease-out forwards;
               }
             `}</style>
           </section>
@@ -280,7 +298,6 @@ export default function Home() {
                   }`}
                   onClick={() => {
                     setActiveCategory(cat)
-                    // Sync banner with category selected (for bullets)
                     const catIndex = categories.indexOf(cat)
                     setBanner(catIndex)
                     startInterval()
@@ -319,32 +336,27 @@ export default function Home() {
             ))}
           </section>
 
-            {/* CONTACT */}
-            <section
-            className="p-6 mt-10 select-text max-w-[900px] mx-auto"
-            style={{ backgroundColor: "transparent" }}
-            >
+          {/* CONTACT */}
+          <section className="p-6 mt-10 select-text max-w-[900px] mx-auto">
             <h2 className="text-xl font-bold">Contact Us</h2>
             <p className="text-sm mt-2">
-                Address: Magellan Financial Services, Ltd. <br />
-                1063 Leeward Highway, Providenciales <br />
-                Turks and Caicos Islands, TKCA1ZZ <br />
-                Email: customerservice@magellanfinancialservices.tc | Phone: +1649 232 6211
+              Address: Magellan Financial Services, Ltd. <br />
+              1063 Leeward Highway, Providenciales <br />
+              Turks and Caicos Islands, TKCA1ZZ <br />
+              Email: customerservice@magellanfinancialservices.tc | Phone: +1649 232 6211
             </p>
-            </section>
+          </section>
+
         </div>
       </DashboardLayout>
 
-      {/* ===============================
-          CAR DETAILS MODAL POPUP
-      ================================ */}
+      {/* CAR DETAILS MODAL */}
       {modalCar && (
         <div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           onClick={() => setModalCar(null)}
           role="dialog"
           aria-modal="true"
-          aria-labelledby="modal-title"
         >
           <div
             className="bg-bg rounded-lg max-w-lg w-full shadow-lg overflow-hidden relative"
@@ -362,13 +374,9 @@ export default function Home() {
               src={modalCar.img}
               alt={modalCar.name}
               className="w-full h-64 object-cover rounded-t-lg"
-              onError={(e) =>
-                (e.target.src = "https://via.placeholder.com/600x400?text=Car+Unavailable")
-              }
-              draggable={false}
             />
             <div className="p-6 text-white">
-              <h3 id="modal-title" className="text-2xl font-bold mb-2">
+              <h3 className="text-2xl font-bold mb-2">
                 {modalCar.name}
               </h3>
               <p>{modalCar.description}</p>

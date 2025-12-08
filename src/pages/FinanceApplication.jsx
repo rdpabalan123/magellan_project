@@ -13,7 +13,7 @@ export default function FinanceApplication() {
       ...data,
       status: 'submitted', // lowercase to match mapping in dashboard
     };
-
+ 
     // Save to localStorage using your storage service
     storage.push('applications', newApp);
 
