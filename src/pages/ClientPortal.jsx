@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../layouts/DashboardLayout';
-import { motion } from 'framer-motion';
 
 // Toasts
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,10 +10,13 @@ import toast, { Toaster } from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+import { motion } from 'framer-motion';  // <--- Import framer-motion
+
 // ---------- Helpers ----------
 function daysUntil(dateString) {
   if (!dateString) return Infinity;
   const today = new Date();
+  // normalize times
   const a = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const b = new Date(dateString);
   const diff = Math.ceil((b - a) / (1000 * 60 * 60 * 24));
@@ -25,16 +27,18 @@ function formatCurrency(amount) {
   return typeof amount === 'number' ? amount.toLocaleString() : amount;
 }
 
+// Ensure we only show a given toastKey once per day (persisted in localStorage)
 function showDailyToast(key, message, opts = {}) {
   try {
     const storeKey = 'lastToastDates_v1';
     const data = JSON.parse(localStorage.getItem(storeKey) || '{}');
     const today = new Date().toISOString().slice(0, 10);
-    if (data[key] === today) return;
+    if (data[key] === today) return; // already shown today
     data[key] = today;
     localStorage.setItem(storeKey, JSON.stringify(data));
     toast(message, opts);
   } catch (err) {
+    // fallback: just show toast
     toast(message, opts);
   }
 }
@@ -81,14 +85,17 @@ function downloadInvoicePDF(invoice, profile, vehicleData) {
   const tableColumn = ['Description', 'Qty', 'Unit', 'Total'];
   const tableRows = [];
 
+  // If invoice has items array, use that; otherwise create fallback
   if (Array.isArray(invoice.items) && invoice.items.length > 0) {
     invoice.items.forEach(it => {
       tableRows.push([it.description || '', it.qty || 1, formatCurrency(it.unit || 0), formatCurrency(it.total || 0)]);
     });
   } else {
+    // fallback single line
     tableRows.push([invoice.description || 'Invoice Charge', 1, formatCurrency(invoice.amount || 0), formatCurrency(invoice.amount || 0)]);
   }
 
+  // autoTable will manage starting position
   doc.autoTable({
     head: [tableColumn],
     body: tableRows,
@@ -117,8 +124,10 @@ function InvoiceList({ client, profile, vehicleData, onMarkPaid }) {
     localStorage.setItem('invoices', JSON.stringify(invoices));
   }, [invoices]);
 
+  // Filter for this client
   const myInvoices = invoices.filter(i => !i.client || i.client === client);
 
+  // Notifications logic: invoice due in <=15 days, daily reminder, and overdue
   useEffect(() => {
     myInvoices.forEach(inv => {
       if (inv.status === 'Paid') return;
@@ -148,6 +157,7 @@ function InvoiceList({ client, profile, vehicleData, onMarkPaid }) {
     toast.success(`Invoice #${id} deleted.`);
   };
 
+  // Sort: Pending, Due, Paid — with clear ranking
   const sortRank = (status) => {
     switch (status) {
       case 'Pending': return 1;
@@ -160,6 +170,7 @@ function InvoiceList({ client, profile, vehicleData, onMarkPaid }) {
   const sorted = [...myInvoices].sort((a, b) => {
     const r = sortRank(a.status) - sortRank(b.status);
     if (r !== 0) return r;
+    // then by due date ascending, missing dates go last
     const dateA = a.dueDate ? new Date(a.dueDate) : new Date(8640000000000000);
     const dateB = b.dueDate ? new Date(b.dueDate) : new Date(8640000000000000);
     return dateA - dateB;
@@ -287,11 +298,14 @@ function ServiceRequests({ client }) {
   );
 }
 
+// Vehicle & Loan + Compliance tracker
 function VehicleLoanSection({ clientEmail }) {
+  // saved key per client
   const storageKey = `vehicleLoan_${clientEmail}`;
   const [data, setData] = useState(() => {
     const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
     if (saved) return saved;
+    // default sample data
     return {
       vehicle: 'Toyota Hilux 2023',
       plate: 'TC-10293',
@@ -299,8 +313,8 @@ function VehicleLoanSection({ clientEmail }) {
       remaining: 245000,
       term: '36 months',
       monthly: 18000,
-      insuranceExpiry: new Date(new Date().setDate(new Date().getDate() + 40)).toISOString().slice(0,10),
-      registrationExpiry: new Date(new Date().setDate(new Date().getDate() + 75)).toISOString().slice(0,10),
+      insuranceExpiry: new Date(new Date().setDate(new Date().getDate() + 40)).toISOString().slice(0,10), // sample +40 days
+      registrationExpiry: new Date(new Date().setDate(new Date().getDate() + 75)).toISOString().slice(0,10), // sample +75 days
     };
   });
 
@@ -308,6 +322,7 @@ function VehicleLoanSection({ clientEmail }) {
     localStorage.setItem(storageKey, JSON.stringify(data));
   }, [data, storageKey]);
 
+  // Notify for insurance and registration nearing expiry (30 days)
   useEffect(() => {
     const insDays = daysUntil(data.insuranceExpiry);
     const regDays = daysUntil(data.registrationExpiry);
@@ -325,6 +340,7 @@ function VehicleLoanSection({ clientEmail }) {
     }
   }, [data.insuranceExpiry, data.registrationExpiry, clientEmail]);
 
+  // Simple UI to update expiry dates
   const updateField = (key, val) => setData(d => ({ ...d, [key]: val }));
 
   return (
@@ -379,6 +395,7 @@ function VehicleLoanSection({ clientEmail }) {
 export default function ClientPortal() {
   const { user } = useAuth();
 
+  // Redirect if not logged in
   if (!user) {
     return (
       <DashboardLayout>
@@ -387,6 +404,7 @@ export default function ClientPortal() {
     );
   }
 
+  // Only allow access to specific roles
   if (!['client', 'admin', 'dev', 'user'].includes(user.role)) {
     return <Navigate to="/" replace />;
   }
@@ -397,74 +415,55 @@ export default function ClientPortal() {
       fullName: user.fullName || user.email,
       phone: '',
       address: '',
-      avatar: null,
+      avatar: null, // base64 image string or null
     };
   });
 
+  // Keep profile saved
   useEffect(() => {
     localStorage.setItem(`client_${user.email}`, JSON.stringify(profile));
-  }, [profile, user]);
+  }, [profile, user.email]);
 
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState(profile);
   const [avatarPreview, setAvatarPreview] = useState(profile.avatar);
+  const [editMode, setEditMode] = useState(false);
 
-  const isValidPhone = (phone) => /^\+?[\d\s\-()]{7,15}$/.test(phone);
+  const firstName = profile.fullName.split(' ')[0] || 'Client';
 
-  const saveProfile = () => {
-    if (!formData.fullName.trim()) {
-      toast.error('Name cannot be empty.');
-      return;
-    }
-    if (formData.phone && !isValidPhone(formData.phone)) {
-      toast.error('Invalid phone number format.');
-      return;
-    }
-    setProfile(formData);
-    setEditMode(false);
-    toast.success('Profile updated.');
-  };
-
-  const handleAvatarChange = (e) => {
+  // When avatar file chosen, convert to base64
+  const onAvatarChange = e => {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      toast.error('Only image files allowed.');
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('Image size must be under 2MB.');
-      return;
-    }
     const reader = new FileReader();
     reader.onload = () => {
-      setFormData(f => ({ ...f, avatar: reader.result }));
       setAvatarPreview(reader.result);
+      setProfile(p => ({ ...p, avatar: reader.result }));
     };
     reader.readAsDataURL(file);
   };
 
-  const firstName = profile.fullName.split(' ')[0] || '';
+  // Save changes and exit edit mode
+  const saveProfile = () => {
+    setEditMode(false);
+    toast.success('Profile updated.');
+  };
+
+  // Vehicle data for invoice demo
+  const vehicleData = {
+    vehicle: 'Toyota Hilux 2023',
+    plate: 'TC-10293',
+  };
 
   return (
     <DashboardLayout>
       <Toaster position="top-right" />
 
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-5xl mx-auto p-4">
         {/* Welcome Block with animation */}
-        <div className="flex items-center space-x-6">
+        <section className="flex items-center gap-6 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              y: [20, 0, 0, -20],
-            }}
-            transition={{
-              duration: 4,
-              ease: 'easeInOut',
-              repeat: Infinity,
-              repeatType: 'loop',
-            }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden border border-gray-300"
           >
             {avatarPreview ? (
@@ -475,59 +474,43 @@ export default function ClientPortal() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              y: [20, 0, 0, -20],
-            }}
-            transition={{
-              duration: 4,
-              ease: 'easeInOut',
-              repeat: Infinity,
-              repeatType: 'loop',
-              delay: 0.2,
-            }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
             className="flex flex-col justify-center"
           >
             {editMode ? (
               <>
                 <input
                   type="text"
-                  value={formData.fullName}
-                  onChange={e => setFormData(f => ({ ...f, fullName: e.target.value }))}
+                  value={profile.fullName}
+                  onChange={e => setProfile(p => ({ ...p, fullName: e.target.value }))}
                   className="input border p-2 rounded mb-2 max-w-xs"
                   placeholder="Full Name"
                 />
                 <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={e => setFormData(f => ({ ...f, phone: e.target.value }))}
+                  type="text"
+                  value={profile.phone}
+                  onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))}
                   className="input border p-2 rounded mb-2 max-w-xs"
-                  placeholder="Phone Number"
+                  placeholder="Phone"
                 />
                 <input
                   type="text"
-                  value={formData.address}
-                  onChange={e => setFormData(f => ({ ...f, address: e.target.value }))}
+                  value={profile.address}
+                  onChange={e => setProfile(p => ({ ...p, address: e.target.value }))}
                   className="input border p-2 rounded mb-2 max-w-xs"
                   placeholder="Address"
                 />
-                <input type="file" accept="image/*" onChange={handleAvatarChange} className="mb-2" />
+                <input type="file" accept="image/*" onChange={onAvatarChange} className="mb-2" />
                 <div>
                   <button
                     onClick={saveProfile}
-                    className="px-4 py-2 mr-2 bg-green-600 text-white rounded hover:bg-green-700"
+                    className="mr-2 px-4 py-1 bg-sky-600 text-white rounded hover:bg-sky-700"
                   >
                     Save
                   </button>
-                  <button
-                    onClick={() => {
-                      setEditMode(false);
-                      setFormData(profile);
-                      setAvatarPreview(profile.avatar);
-                    }}
-                    className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                  >
+                  <button onClick={() => setEditMode(false)} className="px-4 py-1 rounded border hover:bg-gray-100">
                     Cancel
                   </button>
                 </div>
@@ -544,23 +527,22 @@ export default function ClientPortal() {
               </>
             )}
           </motion.div>
-        </div>
+        </section>
 
-        {/* Vehicle Loan Section */}
-        <VehicleLoanSection clientEmail={user.email} />
+        <section className="mb-10">
+          <h3 className="text-xl font-semibold mb-4">Invoices</h3>
+          <InvoiceList client={user.email} profile={profile} vehicleData={vehicleData} />
+        </section>
 
-        {/* Service Requests */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <section className="mb-10">
           <h3 className="text-xl font-semibold mb-4">Service Requests</h3>
           <ServiceRequests client={user.email} />
-        </div>
+        </section>
 
-        {/* Invoice List */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-4">Invoices</h3>
-          <InvoiceList client={user.email} profile={profile} vehicleData={{ vehicle: 'Toyota Hilux 2023', plate: 'TC-10293' }} />
-        </div>
-      </div>
+        <section className="mb-10">
+          <VehicleLoanSection clientEmail={user.email} />
+        </section>
+      </main>
     </DashboardLayout>
   );
 }

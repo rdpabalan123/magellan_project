@@ -1,10 +1,10 @@
 // src/pages/CostCalculator.jsx
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import DashboardLayout from '../layouts/DashboardLayout';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { useTheme } from '../context/ThemeContext';  // <-- Import your theme context hook
+import { useTheme } from '../context/ThemeContext';
 
 const fallbackImage = '/mnt/data/2402fabf-39d0-49ce-9ef7-b7116e8ddcad.png';
 
@@ -20,64 +20,73 @@ const VEHICLES = [
   { name: 'Nissan Almera', amount: 33000, img: 'https://www-asia.nissan-cdn.net/content/dam/Nissan/th/vehicles/VLP/almera-my23/new/spec/vl-spec.jpg' },
 ];
 
+// Format numbers with commas and 2 decimals
+const money = (val) =>
+  Number(val).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
+// Single row for summary info
 function InfoRow({ label, value }) {
   return (
-    <div className="flex justify-between items-center py-1">
-      <span className="font-semibold text-sm">{label}</span>
-      <span className="font-bold bg-white px-3 py-1 rounded text-sm text-black">{value}</span>
+    <div className="flex justify-between items-center py-1 border-b border-slate-600 pb-2">
+      <span className="font-semibold text-sm w-1/2">{label}</span>
+      <span className="font-bold text-sm bg-white px-3 py-1 rounded text-black w-1/2 text-right whitespace-nowrap">
+        {value}
+      </span>
     </div>
   );
 }
 
-
 export default function CostCalculator() {
   const navigate = useNavigate();
   const summaryRef = useRef(null);
-  const { theme } = useTheme();   // <-- Get theme from context
+  const { theme } = useTheme();
   const isDarkTheme = theme === 'dark';
 
-  // UI state
   const [selectedName, setSelectedName] = useState('');
   const [vehicleValue, setVehicleValue] = useState(0);
-  const [interestRate, setInterestRate] = useState(12); // percent, whole number
+  const [interestRate, setInterestRate] = useState(12); // %
   const [terms, setTerms] = useState(24); // months
-  const [downpaymentPercent, setDownpaymentPercent] = useState(20); // percent, whole number
+  const [downpaymentPercent, setDownpaymentPercent] = useState(20); // %
 
-  // Fixed fees - fixed values, non-editable
-  const insurance = 3000;
-  const licenseFee = 1200;
-  const adminFee = 350;
+  // Fixed fees
+  const insurance = 4443.39;
+  const licenseFee = 1260.0;
+  const adminFee = 350.0;
 
   const vehicle = VEHICLES.find((v) => v.name === selectedName) || null;
 
-  // Sync vehicleValue with selected vehicle amount on selection change
   useEffect(() => {
-    if (vehicle) {
-      setVehicleValue(vehicle.amount);
-    } else {
-      setVehicleValue(0);
-    }
+    if (vehicle) setVehicleValue(vehicle.amount);
+    else setVehicleValue(0);
   }, [vehicle]);
 
   // Calculations
-  const interestAmount = vehicleValue * (interestRate / 100) * (terms / 12);
-  const totalFixedFees = insurance + licenseFee + adminFee;
-  const financingValue = vehicleValue + totalFixedFees + interestAmount;
-  const downpayment = financingValue * (downpaymentPercent / 100);
-  const balance = financingValue - downpayment;
-  const monthlyPayment = terms > 0 ? balance / terms : 0;
+  const miscFees = insurance + licenseFee;
 
-  // Inject PDF style for black text
+  const yearlyInterest = vehicleValue * (interestRate / 100);
+  const totalInterestTerm = yearlyInterest * (terms / 12);
+
+  const totalFinanceAmount = vehicleValue + miscFees + totalInterestTerm;
+
+  const downpayment = totalFinanceAmount * (downpaymentPercent / 100);
+  const balance = totalFinanceAmount - downpayment;
+
+  const monthlyInvoice = terms ? balance / terms : 0;
+  const totalDueAtSigning = downpayment + monthlyInvoice + adminFee;
+
+  // Show values only if vehicle selected
+  const showValues = !!vehicle;
+
+  // PDF styles injection
   useEffect(() => {
-    const id = 'cost-calc-pdf-forced-style';
+    const id = 'cost-calc-pdf-style';
     if (!document.getElementById(id)) {
       const style = document.createElement('style');
       style.id = id;
-      style.innerHTML = `
-        .pdf-export * { color: black !important; }
-        .pdf-export { background: white !important; }
-      `;
+      style.innerHTML = `.pdf-export * { color:black !important; } .pdf-export { background:white !important; }`;
       document.head.appendChild(style);
     }
   }, []);
@@ -86,270 +95,193 @@ export default function CostCalculator() {
     if (!summaryRef.current) return;
     const el = summaryRef.current;
     el.classList.add('pdf-export');
-    await new Promise((r) => setTimeout(r, 60));
+    await new Promise((r) => setTimeout(r, 80));
     try {
-      const canvas = await html2canvas(el, { scale: 2, useCORS: true, logging: false });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth() - 40; // margin 20
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, 'PNG', 20, 20, pdfWidth, pdfHeight);
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+      const img = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ format: 'a4', unit: 'pt' });
+      const w = pdf.internal.pageSize.getWidth() - 40;
+      const h = (canvas.height * w) / canvas.width;
+      pdf.addImage(img, 'PNG', 20, 20, w, h);
       pdf.save('financing_summary.pdf');
-    } catch (err) {
-      console.error('PDF export error', err);
-      alert('PDF generation failed — see console for details.');
     } finally {
       el.classList.remove('pdf-export');
     }
   };
 
-  // Common label class for dynamic theme
-  const labelClass = `text-sm font-medium ${isDarkTheme ? 'text-white' : 'text-black'}`;
+  const labelClass = `text-sm font-semibold ${isDarkTheme ? 'text-white' : 'text-black'}`;
 
-  // Common button styles (dynamic text color)
-  const buttonClass =
-    `px-3 py-1 text-sm rounded-md bg-sky-600 hover:bg-sky-700 transition font-semibold ` +
-    (isDarkTheme ? 'text-white' : 'text-white');
-
-  const exportButtonClass =
-    `px-3 py-2 text-sm rounded-md bg-green-400 hover:bg-green-500 transition font-semibold ` +
-    (isDarkTheme ? 'text-slate-900' : 'text-slate-900'); // text dark for export button
-
+  // Render
   return (
     <DashboardLayout>
       <div className="max-w-6xl mx-auto p-6">
-        <div className="bg-panel rounded-xl shadow-lg overflow-hidden">
-          <div className="p-6 md:p-8">
-            {/* Header */}
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <button onClick={() => navigate('/finance')} className={buttonClass}>
-                  ← Back
-                </button>
-                <h1 className={`text-2xl md:text-3xl font-extrabold ml-2 ${isDarkTheme ? 'text-white' : 'text-black'}`}>
-                  Cost Calculator
-                </h1>
-              </div>
+        <div className="bg-panel rounded-xl shadow-lg overflow-hidden p-8">
+          {/* HEADER */}
+          <div className="flex justify-between items-center mb-6">
+            <button
+              onClick={() => navigate('/finance')}
+              className="px-3 py-1 bg-sky-600 text-white rounded-md"
+            >
+              ← Back
+            </button>
 
-              <div className="flex items-center gap-3">
-                <button onClick={generatePDF} className={exportButtonClass}>
-                  Export PDF
-                </button>
+            <h1 className="text-3xl font-extrabold text-white">Cost Calculator</h1>
+
+            <button
+              onClick={generatePDF}
+              className="px-3 py-2 bg-green-400 text-black font-bold rounded-md"
+            >
+              Export PDF
+            </button>
+          </div>
+
+          {/* MAIN GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* LEFT - VEHICLE */}
+            <div className="space-y-4">
+              <label className={labelClass}>Select Vehicle</label>
+              <select
+                className="w-full p-3 rounded bg-white text-black border border-slate-500"
+                value={selectedName}
+                onChange={(e) => setSelectedName(e.target.value)}
+              >
+                <option value="">-- Choose Vehicle --</option>
+                {VEHICLES.map((v) => (
+                  <option key={v.name} value={v.name}>
+                    {v.name} — ${money(v.amount)}
+                  </option>
+                ))}
+              </select>
+
+              <div className="rounded-lg border border-slate-700 p-3 bg-white/5">
+                {vehicle ? (
+                  <img
+                    src={vehicle.img}
+                    alt={vehicle.name}
+                    className="w-full h-64 object-cover mb-3 rounded"
+                    onError={(e) => {
+                      e.currentTarget.src = fallbackImage;
+                    }}
+                  />
+                ) : (
+                  <div className="h-64 flex items-center justify-center text-slate-400">
+                    Select a vehicle to preview
+                  </div>
+                )}
+
+                <div className="text-lg font-bold">
+                  {vehicle ? vehicle.name : '--'}
+                </div>
+                <div className="font-bold text-sky-300">
+                  {vehicle ? `$${money(vehicleValue)}` : '$0.00'}
+                </div>
               </div>
             </div>
 
-            {/* Two-column layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* LEFT: Vehicle selector, image, price display */}
-              <div className="space-y-4">
+            {/* RIGHT — FORM */}
+            <div className="bg-slate-800 p-5 rounded-lg space-y-4 text-white">
+              {/* Inputs */}
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Select Vehicle</label>
+                  <label className={labelClass}>Interest Rate (%)</label>
+                  <input
+                    type="number"
+                    className="w-full mt-2 p-2 rounded bg-bg text-black border border-slate-600"
+                    value={interestRate}
+                    onChange={(e) => setInterestRate(Number(e.target.value))}
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClass}>Terms (months)</label>
                   <select
-                    className="w-full p-3 rounded border border-slate-600 bg-white text-black"
-                    value={selectedName}
-                    onChange={(e) => setSelectedName(e.target.value)}
+                    className="w-full mt-2 p-2 rounded bg-bg text-black border border-slate-600"
+                    value={terms}
+                    onChange={(e) => setTerms(Number(e.target.value))}
                   >
-                    <option value="">-- Choose Vehicle --</option>
-                    {VEHICLES.map((v) => (
-                      <option key={v.name} value={v.name}>
-                        {v.name} — ${v.amount.toLocaleString()}
+                    {[12, 18, 24, 36, 48, 60, 72].map((t) => (
+                      <option key={t} value={t}>
+                        {t} months
                       </option>
                     ))}
                   </select>
                 </div>
-
-                <div className="rounded-lg border border-slate-700 overflow-hidden bg-white/5 p-3">
-                  {vehicle ? (
-                    <img
-                      src={vehicle.img}
-                      alt={vehicle.name}
-                      className="w-full h-64 object-cover rounded-md mb-3"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = fallbackImage;
-                      }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-64 bg-slate-800 rounded-md text-muted">
-                      <span>Select a vehicle to preview</span>
-                    </div>
-                  )}
-
-                  <div className="mt-2">
-                    <div className={`font-semibold text-lg ${isDarkTheme ? 'text-white' : 'text-black'}`}>
-                      {vehicle ? vehicle.name : 'No vehicle selected'}
-                    </div>
-                    <div className="text-white-600 font-bold">${vehicleValue.toLocaleString()}</div>
-                  </div>
-                </div>
               </div>
 
-              {/* RIGHT: Inputs and live result */}
               <div>
-                <div className="bg-bg rounded-lg p-4 space-y-4">
-                  {/* Inputs row 1 */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className={labelClass}>Interest Rate (%)</label>
-                      <input
-                        type="number"
-                        min={0}
-                        max={100}
-                        step={1}
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-bg text-black"
-                        value={interestRate}
-                        onChange={(e) => {
-                          let val = Math.min(100, Math.max(0, Number(e.target.value)));
-                          if (isNaN(val)) val = 0;
-                          setInterestRate(Math.round(val));
-                        }}
-                      />
-                    </div>
+                <label className={labelClass}>Downpayment (%)</label>
+                <input
+                  type="number"
+                  className="w-full mt-2 p-2 rounded bg-bg text-black border border-slate-600"
+                  value={downpaymentPercent}
+                  onChange={(e) => setDownpaymentPercent(Number(e.target.value))}
+                />
+              </div>
 
-                    <div>
-                      <label className={labelClass}>Terms (months)</label>
-                      <select
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-bg text-black"
-                        value={terms}
-                        onChange={(e) => setTerms(Number(e.target.value))}
-                      >
-                        {[12, 18, 24, 36, 48, 60, 72].map((t) => (
-                          <option key={t} value={t}>
-                            {t} months
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+              {/* Costing Summary Box */}
+              <div className="bg-black/30 p-4 rounded mt-4 border border-slate-600">
+                <h2 className="text-lg font-bold mb-2">Costing Summary</h2>
 
-                  {/* Inputs row 2 */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className={labelClass}>Downpayment (%)</label>
-                      <input
-                        type="number"
-                        min={0}
-                        max={100}
-                        step={1}
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-bg text-black"
-                        value={downpaymentPercent}
-                        onChange={(e) => {
-                          let val = Math.min(100, Math.max(0, Number(e.target.value)));
-                          if (isNaN(val)) val = 0;
-                          setDownpaymentPercent(Math.round(val));
-                        }}
-                      />
-                    </div>
-
-                    <div>
-                      <label className={labelClass}>Insurance (total)</label>
-                      <input
-                        type="number"
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-white text-black cursor-not-allowed"
-                        value={insurance}
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  {/* Inputs row 3 */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className={labelClass}>License Fee</label>
-                      <input
-                        type="number"
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-white text-black cursor-not-allowed"
-                        value={licenseFee}
-                        disabled
-                      />
-                    </div>
-
-                    <div>
-                      <label className={labelClass}>Admin Fee</label>
-                      <input
-                        type="number"
-                        className="w-full mt-2 p-2 rounded border border-slate-600 bg-white text-black cursor-not-allowed"
-                        value={adminFee}
-                        disabled
-                      />
-                    </div>
-                  </div>
-
-                  {/* Live result box */}
-                  <div className="mt-3 p-4 bg-slate-800 rounded text-text">
-                    <div className="flex justify-between mb-2">
-                      <span className="font-semibold text-white">Interest Amount</span>
-                      <span className="font-bold text-sky-400">${interestAmount.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span className="font-semibold text-white">Total Fixed Fees</span>
-                      <span className="font-bold text-sky-400">${totalFixedFees.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span className="font-semibold text-white">Financing Value</span>
-                      <span className="font-bold text-sky-400">${financingValue.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span className="font-semibold text-white">Downpayment Amount</span>
-                      <span className="font-bold text-sky-400">${downpayment.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-semibold text-white">Monthly Payment</span>
-                      <span className="font-extrabold text-2xl text-sky-300">${monthlyPayment.toFixed(2)}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 text-sm text-white/70">
-                    <div className="font-semibold mb-1">Amortization (preview)</div>
-                    <div>
-                      First month approx. payment: <strong>${monthlyPayment.toFixed(2)}</strong>
-                    </div>
-                    <div className="text-xs">Estimates exclude taxes or other external fees.</div>
-                  </div>
-                </div>
+                <InfoRow label="Vehicle Value" value={showValues ? `$${money(vehicleValue)}` : '--'} />
+                <InfoRow label="Miscellaneous (Insurance + License)" value={showValues ? `$${money(miscFees)}` : '--'} />
+                <InfoRow label="Yearly Interest" value={showValues ? `$${money(yearlyInterest)}` : '--'} />
+                <InfoRow label="Total Interest (Term)" value={showValues ? `$${money(totalInterestTerm)}` : '--'} />
+                <InfoRow label="Total Finance Amount" value={showValues ? `$${money(totalFinanceAmount)}` : '--'} />
+                <InfoRow label="Downpayment" value={showValues ? `$${money(downpayment)}` : '--'} />
+                <InfoRow label="Balance" value={showValues ? `$${money(balance)}` : '--'} />
+                <InfoRow label="Monthly Invoice Fee" value={showValues ? `$${money(monthlyInvoice)}` : '--'} />
+                <InfoRow label="Total Due Upon Signing" value={showValues ? `$${money(totalDueAtSigning)}` : '--'} />
               </div>
             </div>
+          </div>
 
-            {/* Printable Summary */}
-            <div className="mt-8" ref={summaryRef}>
-              <div className={`bg-bg p-6 rounded-lg border border-slate-700 ${isDarkTheme ? 'text-white' : 'text-black'}`}>
-                <h3 className="text-lg font-bold mb-4">Financing Summary</h3>
+          {/* FINANCING SUMMARY PRINT SECTION */}
+          <div className="mt-8" ref={summaryRef}>
+            <div className="bg-slate-900 p-6 rounded border border-slate-700 text-white">
+              <h3 className="text-xl font-bold mb-4">Financing Summary</h3>
 
-                <div className="grid grid-cols-1 gap-3">
-                  <InfoRow label="Vehicle" value={vehicle ? vehicle.name : '—'} />
-                  <InfoRow label="Vehicle Price" value={`$${vehicleValue.toLocaleString()}`} />
-                  <InfoRow label="Interest Amount" value={`$${interestAmount.toFixed(2)}`} />
-                  <InfoRow label="Total Fixed Fees" value={`$${totalFixedFees.toLocaleString()}`} />
-                  <InfoRow label="Financing Value" value={`$${financingValue.toFixed(2)}`} />
-                  <InfoRow label="Downpayment" value={`${downpaymentPercent}%`} />
-                  <InfoRow label="Downpayment Amount" value={`$${downpayment.toFixed(2)}`} />
-                  <InfoRow label="Balance" value={`$${balance.toFixed(2)}`} />
-                  <InfoRow label="Monthly Payment" value={`$${monthlyPayment.toFixed(2)}`} />
-                </div>
-              </div>
+              <InfoRow label="Vehicle" value={vehicle ? vehicle.name : '--'} />
+              <InfoRow label="Vehicle Price" value={showValues ? `$${money(vehicleValue)}` : '--'} />
+              <InfoRow label="Miscellaneous Fees" value={showValues ? `$${money(miscFees)}` : '--'} />
+              <InfoRow label="Yearly Interest" value={showValues ? `$${money(yearlyInterest)}` : '--'} />
+              <InfoRow label="Total Interest for Term" value={showValues ? `$${money(totalInterestTerm)}` : '--'} />
+              <InfoRow label="Total Finance Amount" value={showValues ? `$${money(totalFinanceAmount)}` : '--'} />
+              <InfoRow label="Downpayment Amount" value={showValues ? `$${money(downpayment)}` : '--'} />
+              <InfoRow label="Balance" value={showValues ? `$${money(balance)}` : '--'} />
+              <InfoRow label="Monthly Invoice Fee" value={showValues ? `$${money(monthlyInvoice)}` : '--'} />
+              <InfoRow label="Total Due Upon Signing" value={showValues ? `$${money(totalDueAtSigning)}` : '--'} />
+            </div>
 
-              {/* Additional Information */}
-              <div className={`mt-6 grid grid-cols-1 gap-3 ${isDarkTheme ? 'text-white' : 'text-black'}`}>
-                {[
-                  ['Authorized Repair Facility', 'Bayview Motors, Ltd.'],
-                  ['Authorized Use of Vehicle', 'Private'],
-                  ['Authorized Island of Use', 'Providenciales'],
-                  ['Warranty', '1 year or 10,000 kms whichever comes first'],
-                  ['Option to Purchase', 'After 12 months'],
-                  ['Fee', '$250'],
-                  ['Payment Due Date', 'First of each month'],
-                  [
-                    'Payment Instructions',
-                    'Please make cheque payable to MAGELLAN FINANCIAL SERVICES, LTD. Payment should be made at Bayview Motors, Ltd. Office',
-                  ],
-                ].map(([label, value]) => (
-                  <div key={label} className="border border-slate-700 rounded p-3 bg-white/5">
-                    <div className="font-bold mb-1">{label}:</div>
-                    <div>{value}</div>
-                  </div>
-                ))}
-              </div>
+            {/* BOTTOM CTA */}
+            <div className="mt-10 p-8 bg-blue-50 rounded-2xl text-center shadow-md">
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                You're Only Minutes Away From Your New Car!
+              </h2>
+
+              <p className="text-gray-700 mb-2">
+                Stop calculating, start driving. Your estimated payment looks great—now take the final step to secure your lease.
+              </p>
+
+              <p className="text-gray-700 mb-4">
+                Our simple application is the fastest route to getting the keys.
+              </p>
+
+              <ul className="list-disc list-inside text-gray-700 mb-4">
+                <li>Finalize Your Terms</li>
+                <li>Secure Your Vehicle</li>
+                <li>Get Approved!</li>
+              </ul>
+
+              <p className="font-semibold text-gray-800 mb-6">
+                Hit <span className="italic">'Apply Now'</span> and let us get you on the road!
+              </p>
+
+              <Link
+                to="/finance"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white py-4 px-10 rounded-xl text-lg font-semibold transition-all"
+              >
+                APPLY NOW
+              </Link>
             </div>
           </div>
         </div>
