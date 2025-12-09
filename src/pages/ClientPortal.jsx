@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 // Toasts
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast'; 
 
 // PDF generation
 import jsPDF from 'jspdf';

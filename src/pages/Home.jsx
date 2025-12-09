@@ -181,11 +181,10 @@ export default function Home() {
           </section>
 
           {/* ==========================
-              UPDATED ABOUT US (2-COLUMN, ANIMATED)
+              UPDATED ABOUT US (2-COLUMN, PROFESSIONAL)
           =========================== */}
           <section className="max-w-[900px] mx-auto mt-10 px-4 select-text">
             <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-lg animate-fade-in">
-
               <h2 className="text-2xl font-extrabold mb-6 text-white drop-shadow">
                 About Us
               </h2>
@@ -193,88 +192,83 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
                 {/* LEFT COLUMN */}
-                <div className="space-y-4 text-slate-300 leading-relaxed text-sm">
-
-                  <p className="font-semibold text-white text-lg">
-                    About Magellan Financial Services
-                  </p>
+                <div className="space-y-5 text-slate-300 leading-relaxed text-sm">
+                  <p className="font-semibold text-white text-lg">About Magellan Financial Services</p>
 
                   <p>
                     <strong>Our Vision: Fueling Prosperity in the Turks and Caicos Islands</strong><br />
-                    At Magellan Financial Services, we believe that the vibrant economy of the Turks and Caicos Islands (TCI) 
-                    deserves financial solutions that are as dynamic and forward-thinking as its people.
+                    At Magellan Financial Services, we believe that the vibrant economy of the Turks and Caicos Islands (TCI) deserves financial solutions that are as dynamic and forward-thinking as its people. Named after the pioneering spirit of Ferdinand Magellan, our company is dedicated to charting a course for your financial success by providing flexible, accessible, and transparent leasing options.
                   </p>
 
                   <p>
-                    We are a locally focused financial services provider committed to supporting the growth of businesses 
-                    and individuals across Providenciales, Grand Turk, and all the islands of the TCI.
+                    We are a locally focused financial services provider committed to supporting the growth of businesses and individuals across Providenciales, Grand Turk, and all the islands of the TCI.
                   </p>
 
                   <p className="font-semibold text-white">Why Choose Leasing with Magellan?</p>
 
                   <p>
-                    We remove the large upfront capital barrier, enabling businesses and individuals to acquire needed assets sooner.
+                    We understand the challenges of acquiring high-value assets in a growing island nation—from boats and heavy machinery to essential business equipment and vehicles. Our core mission is to remove the large upfront capital barrier, enabling you to put your assets to work sooner.
                   </p>
 
                   <p>
-                    Magellan specializes in structured leasing & financing solutions for vehicles, fleets, and equipment.
+                    Magellan specializes in structured leasing and financing solutions for <strong>Vehicle & Fleet Leasing:</strong> Financing for commercial vehicles, rental fleets, and personal vehicles.
+                  </p>
+
+                  <p className="font-semibold text-white">Our Core Commitment: Local Expertise, Global Standards</p>
+
+                  <p>
+                    Let's Chart Your Future Together. Whether you are a seasoned resort owner looking to upgrade your fleet, a budding entrepreneur purchasing your first essential vehicle, or an individual acquiring a personal vehicle, Magellan Financial Services is your trusted partner.
+                  </p>
+
+                  <p>
+                    Our goal is simple: To provide the financing that turns your vision into reality, allowing you to focus on what you do best.
                   </p>
                 </div>
 
-                {/* RIGHT COLUMN - COMMITMENT BOXES */}
-                <div className="space-y-4">
+                {/* RIGHT COLUMN - COMMITMENTS TABLE */}
+                <div className="text-white">
+                  
 
-                  {[
-                    {
-                      icon: MapPinIcon,
-                      title: "Local Focus",
-                      text: "We understand local regulations, markets, and the unique business environment of TCI."
-                    },
-                    {
-                      icon: BoltIcon,
-                      title: "Speed",
-                      text: "Fast approvals and a streamlined process to get your assets delivered quickly."
-                    },
-                    {
-                      icon: ShieldCheckIcon,
-                      title: "Transparency",
-                      text: "Clear terms, simple documentation, and no hidden fees—trust is our foundation."
-                    },
-                    {
-                      icon: UserCircleIcon,
-                      title: "Flexibility",
-                      text: "Leasing structured around your seasonal cash flow and business cycle."
-                    },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="bg-white/5 p-4 rounded-lg border border-white/10 flex gap-4 items-start 
-                                 transform opacity-0 translate-y-4 animate-fade-slide"
-                      style={{ animationDelay: `${i * 0.2}s` }}
-                    >
-                      <item.icon className="h-8 w-8 text-white" />
-                      <div>
-                        <h4 className="text-white font-semibold">{item.title}</h4>
-                        <p className="text-slate-300 text-sm">{item.text}</p>
-                      </div>
-                    </div>
-                  ))}
-
+                  <table className="w-full text-left border border-white/20 rounded-lg overflow-hidden">
+                    <thead className="bg-white/10">
+                      <tr>
+                        <th className="p-3 font-semibold border-b border-white/20 w-1/3">Commitment</th>
+                        <th className="p-3 font-semibold border-b border-white/20">What It Means for You</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-white/20">
+                        <td className="p-3 font-semibold">Local Focus</td>
+                        <td className="p-3 text-slate-300">
+                          We are based right here in the TCI. Our team understands local regulations, market values, and the unique business environment of the islands.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-white/20">
+                        <td className="p-3 font-semibold">Flexibility</td>
+                        <td className="p-3 text-slate-300">
+                          We offer tailored lease structures with competitive rates and payment schedules designed to align with your seasonal cash flow and business cycle.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-white/20">
+                        <td className="p-3 font-semibold">Transparency</td>
+                        <td className="p-3 text-slate-300">
+                          Clear terms, simple documentation, and no hidden fees. We build our relationships on trust.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-3 font-semibold">Speed</td>
+                        <td className="p-3 text-slate-300">
+                          Our streamlined application and approval process is designed to get your financing secured and your assets delivered quickly.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-
               </div>
-
             </div>
 
             {/* ANIMATION KEYFRAMES */}
             <style>{`
-              @keyframes fadeSlide {
-                0% { opacity: 0; transform: translateY(20px); }
-                100% { opacity: 1; transform: translateY(0); }
-              }
-              .animate-fade-slide {
-                animation: fadeSlide 0.6s ease-out forwards;
-              }
               @keyframes fadeInCenter {
                 0% { opacity: 0; transform: scale(0.98); }
                 100% { opacity: 1; transform: scale(1); }
