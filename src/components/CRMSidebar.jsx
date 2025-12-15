@@ -15,12 +15,11 @@ export default function CRMSidebar() {
   // CRM modules menu list
   const crmModules = [
     { to: '/company', label: '🏢 Company Portal Home' },
-    { to: '/company/applications', label: '📄 All Applications' },
-    { to: '/company/invoices', label: '🧾 All Invoices' },
-    { to: '/company/outstanding', label: '📌 Corporate' },
-    { to: '/company/near-due', label: '⚠️ Individual' },
-    { to: '/company/near-due', label: '⚠️ Employee' },
-    { to: '/company/summary', label: '📊 Client Summary' },
+    { to: '/company/applications', label: '📄 Corporate' },
+    { to: '/company/invoices', label: '🧾 Individual' },
+    { to: '/company/outstanding', label: '📌 In house Employee' },
+    { to: '/company/near-due', label: '⚠️ Summary' },
+    { to: '/company/near-due', label: '⚠️ User Database' },
     { to: '/company/notifications', label: '🔔 Notifications' },
   ];
 
