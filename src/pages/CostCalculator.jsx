@@ -9,16 +9,66 @@ import { useTheme } from '../context/ThemeContext';
 const fallbackImage = '/mnt/data/2402fabf-39d0-49ce-9ef7-b7116e8ddcad.png';
 
 const VEHICLES = [
-  { name: 'Kio Seltos', amount: 25000, img: 'https://cdn.jdpower.com/Models/640x480/2021-Kia-Seltos-SX.jpg' },
-  { name: 'Suzuki Swift', amount: 26000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkIfysA8Ahwn_DAxcpztBQtEDQf8Slx79d8Q&s' },
-  { name: 'Suzuki Ciaz', amount: 27000, img: 'https://www.autodeal.com.ph/custom/car-model-photo/original/2022-suzuki-ciaz-front-quarter-philippines-60e7cc4701283.jpg' },
-  { name: 'Hyundai Storia', amount: 28000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvzDu55nJpY7Bb6i-gS5fQtedYFOlOYnp1lQ&s' },
-  { name: 'Jeep Wrangler', amount: 29000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5QYP7i0WkB4PSNdMWHpE02qaVRE5hHiXQzw&s' },
-  { name: 'Suzuki Ignis', amount: 30000, img: 'https://www.suzukiauto.co.za/hubfs/Ignis%20-%20Glistening%20Grey%20Metallic.png' },
-  { name: 'Nissan Terra', amount: 31000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkgq38v4Sc2ulvkCUWxsBDwv9hIFhTjVrXdg&s' },
-  { name: 'Suzuki Dzire', amount: 32000, img: 'https://www.autodeal.com.ph/custom/car-model-photo/original/suzuki-dzire-637b2efcc7f9b.jpg' },
-  { name: 'Nissan Almera', amount: 33000, img: 'https://www-asia.nissan-cdn.net/content/dam/Nissan/th/vehicles/VLP/almera-my23/new/spec/vl-spec.jpg' },
+  { name: '162255 - 2026 - RAM - PICKUP - WHITE - 8 6.4L V8', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2026-Ram-2500-Tradesman.jpg' },
+  { name: '252801 - 2026 - SUZUKI - SUV - GREEN - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Jimny.jpg' },
+
+  { name: '653057 - 2025 - JEEP - SUV - BRANCO P - 4 1.3L', amount: 42500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+  { name: '664387 - 2025 - JEEP - SUV - WHITE - 4 1.3', amount: 42900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+  { name: '664762 - 2025 - JEEP - SUV - GRANITE - 4 1.3', amount: 42900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+
+  { name: "565448 - 2025 - JEEP - SUV - '41 DRAB - 4 2.0L L4", amount: 77500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "565449 - 2025 - JEEP - SUV - MOJITO G - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "507882 - 2025 - JEEP - SUV - BRIGHT W - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "591753 - 2025 - JEEP - WAGON 4DO - ORANGE - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+
+  { name: '649761 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 65500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '550876 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 68500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '555635 - 2025 - RAM - PICKUP - BILLETS - 6 3.6L V6', amount: 64900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '555130 - 2025 - RAM - PICKUP - BILLETS - 6 3.6L V6', amount: 64900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '649760 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 65500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '565269 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 68900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '554771 - 2025 - RAM - PICKUP - SILVER - 6 3.6L V6', amount: 68900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+
+  { name: '654848 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 63900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+  { name: '654896 - 2025 - RAM - NIGHT EDIT - BRIGHT W - 6 3.6L V6', amount: 69900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+  { name: '654849 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 63900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+
+  { name: '88033 - 2025 - RAM - PICKUP - SILVER - 3 1.0L', amount: 38900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-700.jpg' },
+  { name: '99878 - 2025 - RAM - TRUCK - SILVER - 4 2.0', amount: 58900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-Rampage.jpg' },
+
+  { name: '271285 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Carry.jpg' },
+  { name: '271282 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Carry.jpg' },
+
+  { name: '492884 - 2025 - SUZUKI - GRANDEUR - 0 1.5', amount: 33500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Fronx.jpg' },
+  { name: '104389 - 2025 - SUZUKI - SUV - SPLENDID - 0 1.5', amount: 38900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Grand-Vitara.jpg' },
+  { name: '187453 - 2025 - SUZUKI - SUV - KINETIC - 0', amount: 39500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Jimny.jpg' },
+
+  { name: '337175 - 2025 - SUZUKI - PICK UPTR - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '316532 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '337208 - 2025 - SUZUKI - TRUCK - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '337355 - 2025 - SUZUKI - TRUCK - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+
+  { name: '107641 - 2025 - SUZUKI - SUV - SNOW WHI - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107737 - 2025 - SUZUKI - SUV - SNOW WHI - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107618 - 2025 - SUZUKI - SUV - MAGMA GR - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '108019 - 2025 - SUZUKI - SUV - EYP SAVA - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107603 - 2025 - SUZUKI - SUV - RISING0 - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107630 - 2025 - SUZUKI - SUV - MAGMAGR - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+
+  { name: '239516 - 2025 - TOYOTA - DOUBLECAB - WHITE - 0 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '240102 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '855986 - 2025 - TOYOTA - TRUCKSING - WHITE - 0 2.4', amount: 41900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '239960 - 2025 - TOYOTA - DOUBLE CAB - WHITE - 0', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558431 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '855988 - 2025 - TOYOTA - TRUCK SING - WHITE - 0 2.4', amount: 41900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '239799 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558120 - 2025 - TOYOTA - DOUBLECA - WHITE - 0 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '557914 - 2025 - TOYOTA - DOUBLE CAB - WHITE - 0', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '238864 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558262 - 2025 - TOYOTA - TRUCKDOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558428 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
 ];
+
 
 // Format numbers with commas and 2 decimals
 const money = (val) =>
