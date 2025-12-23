@@ -19,7 +19,8 @@ export default function CRMSidebar() {
     { to: '/company/invoices', label: '🧾 Individual' },
     { to: '/company/outstanding', label: '📌 In house Employee' },
     { to: '/company/near-due', label: '⚠️ Summary' },
-    { to: '/company/near-due', label: '⚠️ User Database' },
+    { to: '/company/users', label: '👥 User Database' },
+    { to: '/company/vehicles', label: '🚗 Vehicle Database' },
     { to: '/company/notifications', label: '🔔 Notifications' },
   ];
 

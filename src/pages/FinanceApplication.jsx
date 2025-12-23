@@ -11,15 +11,64 @@ const STEPS = [
 ];
 
 const VEHICLES = [
-  { name: 'Kia Seltos', amount: 25000, img: 'https://cdn.jdpower.com/Models/640x480/2021-Kia-Seltos-SX.jpg' },
-  { name: 'Suzuki Swift', amount: 26000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkIfysA8Ahwn_DAxcpztBQtEDQf8Slx79d8Q&s' },
-  { name: 'Suzuki Ciaz', amount: 27000, img: 'https://www.autodeal.com.ph/custom/car-model-photo/original/2022-suzuki-ciaz-front-quarter-philippines-60e7cc4701283.jpg' },
-  { name: 'Hyundai Storia', amount: 28000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvzDu55nJpY7Bb6i-gS5fQtedYFOlOYnp1lQ&s' },
-  { name: 'Jeep Wrangler', amount: 29000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5QYP7i0WkB4PSNdMWHpE02qaVRE5hHiXQzw&s' },
-  { name: 'Suzuki Ignis', amount: 30000, img: 'https://www.suzukiauto.co.za/hubfs/Ignis%20-%20Glistening%20Grey%20Metallic.png' },
-  { name: 'Nissan Terra', amount: 31000, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkgq38v4Sc2ulvkCUWxsBDwv9hIFhTjVrXdg&s' },
-  { name: 'Suzuki Dzire', amount: 32000, img: 'https://www.autodeal.com.ph/custom/car-model-photo/original/suzuki-dzire-637b2efcc7f9b.jpg' },
-  { name: 'Nissan Almera', amount: 33000, img: 'https://www-asia.nissan-cdn.net/content/dam/Nissan/th/vehicles/VLP/almera-my23/new/spec/vl-spec.jpg' },
+  { name: '162255 - 2026 - RAM - PICKUP - WHITE - 8 6.4L V8', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2026-Ram-2500-Tradesman.jpg' },
+  { name: '252801 - 2026 - SUZUKI - SUV - GREEN - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Jimny.jpg' },
+
+  { name: '653057 - 2025 - JEEP - SUV - BRANCO P - 4 1.3L', amount: 42500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+  { name: '664387 - 2025 - JEEP - SUV - WHITE - 4 1.3', amount: 42900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+  { name: '664762 - 2025 - JEEP - SUV - GRANITE - 4 1.3', amount: 42900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Renegade-Latitude.jpg' },
+
+  { name: "565448 - 2025 - JEEP - SUV - '41 DRAB - 4 2.0L L4", amount: 77500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "565449 - 2025 - JEEP - SUV - MOJITO G - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "507882 - 2025 - JEEP - SUV - BRIGHT W - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+  { name: "591753 - 2025 - JEEP - WAGON 4DO - ORANGE - 4 2.0L L4", amount: 75900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Jeep-Wrangler-Sport.jpg' },
+
+  { name: '649761 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 65500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '550876 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 68500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '555635 - 2025 - RAM - PICKUP - BILLETS - 6 3.6L V6', amount: 64900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '555130 - 2025 - RAM - PICKUP - BILLETS - 6 3.6L V6', amount: 64900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '649760 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 65500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '565269 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 68900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+  { name: '554771 - 2025 - RAM - PICKUP - SILVER - 6 3.6L V6', amount: 68900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-BigHorn.jpg' },
+
+  { name: '654848 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 63900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+  { name: '654896 - 2025 - RAM - NIGHT EDIT - BRIGHT W - 6 3.6L V6', amount: 69900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+  { name: '654849 - 2025 - RAM - PICKUP - WHITE - 6 3.6L V6', amount: 63900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-1500-Tradesman.jpg' },
+
+  { name: '88033 - 2025 - RAM - PICKUP - SILVER - 3 1.0L', amount: 38900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-700.jpg' },
+  { name: '99878 - 2025 - RAM - TRUCK - SILVER - 4 2.0', amount: 58900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Ram-Rampage.jpg' },
+
+  { name: '271285 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Carry.jpg' },
+  { name: '271282 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Carry.jpg' },
+
+  { name: '492884 - 2025 - SUZUKI - GRANDEUR - 0 1.5', amount: 33500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Fronx.jpg' },
+  { name: '104389 - 2025 - SUZUKI - SUV - SPLENDID - 0 1.5', amount: 38900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Grand-Vitara.jpg' },
+  { name: '187453 - 2025 - SUZUKI - SUV - KINETIC - 0', amount: 39500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Jimny.jpg' },
+
+  { name: '337175 - 2025 - SUZUKI - PICK UPTR - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '316532 - 2025 - SUZUKI - TRUCK - WHITE - 0', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '337208 - 2025 - SUZUKI - TRUCK - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+  { name: '337355 - 2025 - SUZUKI - TRUCK - WHITE - 3 1.2L', amount: 27500, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-Super-Carry.jpg' },
+
+  { name: '107641 - 2025 - SUZUKI - SUV - SNOW WHI - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107737 - 2025 - SUZUKI - SUV - SNOW WHI - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107618 - 2025 - SUZUKI - SUV - MAGMA GR - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '108019 - 2025 - SUZUKI - SUV - EYP SAVA - 0', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107603 - 2025 - SUZUKI - SUV - RISING0 - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+  { name: '107630 - 2025 - SUZUKI - SUV - MAGMAGR - 0 1.5', amount: 0, img: 'https://cdn.jdpower.com/Models/640x480/2025-Suzuki-XL7.jpg' },
+
+  { name: '239516 - 2025 - TOYOTA - DOUBLECAB - WHITE - 0 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '240102 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '855986 - 2025 - TOYOTA - TRUCKSING - WHITE - 0 2.4', amount: 41900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '239960 - 2025 - TOYOTA - DOUBLE CAB - WHITE - 0', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558431 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '855988 - 2025 - TOYOTA - TRUCK SING - WHITE - 0 2.4', amount: 41900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '239799 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558120 - 2025 - TOYOTA - DOUBLECA - WHITE - 0 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '557914 - 2025 - TOYOTA - DOUBLE CAB - WHITE - 0', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '238864 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558262 - 2025 - TOYOTA - TRUCKDOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
+  { name: '558428 - 2025 - TOYOTA - TRUCK DOUB - WHITE - 4 2.4', amount: 53900, img: 'https://cdn.jdpower.com/Models/640x480/2025-Toyota-Hilux.jpg' },
 ];
 
 export default function FinanceApplication() {
@@ -29,6 +78,10 @@ export default function FinanceApplication() {
   });
   const [uploadedFile, setUploadedFile] = useState(null);
   const pdfRef = useRef();
+  const statusTurksIslander = watch('statusTurksIslander');
+  const statusNaturalized = watch('statusNaturalized');
+  const statusPRC = watch('statusPRC');
+  const statusWorkPermit = watch('statusWorkPermit');
 
   // Watch weekly fields for auto update on monthly fields in Step 2
   const weeklyFieldsMap = [
@@ -216,18 +269,21 @@ export default function FinanceApplication() {
               {/* Personal Info Inputs */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* User Role (auto mapped) */}
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" {...register('corporate')} />
-                  <span>Corporate</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" {...register('individual')} />
-                  <span>Individual</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" {...register('inHouseEmployee')} />
-                  <span>In House Employee</span>
-                </label>
+              <label className="block">
+                <span>Select Client Type</span>
+                <select
+                  className="mt-1 block w-full rounded border border-gray-300 p-2"
+                  {...register('userRole')}
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                  --
+                  </option>
+                  <option value="corporate">Corporate</option>
+                  <option value="individual">Individual</option>
+                  <option value="inHouseEmployee">In House Employee</option>
+                </select>
+              </label>
 
                 <div className="col-span-2">
                   <p className="font-semibold">Is this a Joint Account?</p>
@@ -254,13 +310,22 @@ export default function FinanceApplication() {
                   )}
                 </div>
 
+                <h3 className="col-span-2 text-base font-semibold text-gray-900">
+                  Registration Date
+                </h3>
+
                 <input
                   type="date"
                   {...register('applicationDate', { required: true })}
                   className="input col-span-2"
                   placeholder="Date"
                 />
-                {errors.applicationDate && <p className="text-red-600 text-sm">Date is required</p>}
+
+                {errors.applicationDate && (
+                  <p className="col-span-2 text-red-600 text-sm">
+                    Date is required
+                  </p>
+                )}
 
                 <input
                   {...register('agentName', { required: true })}
@@ -372,13 +437,23 @@ export default function FinanceApplication() {
                   {errors.gender && <p className="text-red-600 text-sm">Gender is required</p>}
                 </div>
 
-                <input
-                  type="date"
-                  {...register('dob', { required: true })}
-                  className="input"
-                  placeholder="Date of Birth"
-                />
-                {errors.dob && <p className="text-red-600 text-sm">Date of Birth is required</p>}
+                <label className="block">
+                  <span className="block text-sm font-semibold text-gray-800 mb-1">
+                    Date Of Birth
+                  </span>
+
+                  <input
+                    type="date"
+                    {...register('dob', { required: true })}
+                    className="input"
+                  />
+
+                  {errors.dob && (
+                    <p className="text-red-600 text-sm mt-1">
+                      Date of Birth is required
+                    </p>
+                  )}
+                </label>
 
                 <input
                   {...register('maritalStatus', { required: true })}
@@ -387,69 +462,129 @@ export default function FinanceApplication() {
                 />
                 {errors.maritalStatus && <p className="text-red-600 text-sm">Marital Status is required</p>}
 
-                <div>
-                  <p className="font-semibold">Status in TCI</p>
-                  <label className="inline-flex items-center mr-4">
-                    <input type="checkbox" {...register('statusTurksIslander')} />
-                    Turks Islander
-                  </label>
-                  <label className="inline-flex items-center mr-4">
-                    <input type="checkbox" {...register('statusNaturalized')} />
-                    Naturalized
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input type="checkbox" {...register('statusPRC')} />
-                    PRC
-                  </label>
-                </div>
+                  <div className="col-span-2 mt-6">
+                    <p className="font-semibold text-gray-900 mb-3">
+                      STATUS in the Islands
+                    </p>
 
-                <input
-                  {...register('certNumber', { required: false })}
-                  className="input"
-                  placeholder="Certificate Number (if applicable)"
-                />
-                <input
-                  type="date"
-                  {...register('certDate', { required: false })}
-                  className="input"
-                  placeholder="Certificate Date (if applicable)"
-                />
+                    <div className="flex flex-wrap gap-6">
+                      <label className="inline-flex items-center space-x-2">
+                        <input type="checkbox" {...register('statusTurksIslander')} />
+                        <span>Turks Islander</span>
+                      </label>
 
-                <input
-                  {...register('prcNumber', { required: false })}
-                  className="input"
-                  placeholder="PRC Number (if applicable)"
-                />
-                <input
-                  type="date"
-                  {...register('prcDate', { required: false })}
-                  className="input"
-                  placeholder="PRC Date (if applicable)"
-                />
+                      <label className="inline-flex items-center space-x-2">
+                        <input type="checkbox" {...register('statusNaturalized')} />
+                        <span>Naturalized</span>
+                      </label>
 
-                <input
-                  {...register('workPermitRef', { required: false })}
-                  className="input"
-                  placeholder="Work Permit Reference (if applicable)"
-                />
-                <input
-                  type="date"
-                  {...register('workPermitExpiry', { required: false })}
-                  className="input"
-                  placeholder="Work Permit Expiry (if applicable)"
-                />
+                      <label className="inline-flex items-center space-x-2">
+                        <input type="checkbox" {...register('statusPRC')} />
+                        <span>PRC</span>
+                      </label>
 
-                <input
-                  {...register('statusCardNumber', { required: false })}
-                  className="input"
-                  placeholder="Status Card Number (if applicable)"
-                />
-                <input
-                  type="date"
-                  {...register('statusCardDate', { required: false })}
-                  className="input"
-                  placeholder="Status Card Date (if applicable)"
-                />
+                      <label className="inline-flex items-center space-x-2">
+                        <input type="checkbox" {...register('statusWorkPermit')} />
+                        <span>Work Permit</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* ================= TURKS ISLANDER ================= */}
+                  {statusTurksIslander && (
+                    <>
+                      <div className="col-span-2 mt-4">
+                        <h4 className="font-semibold text-gray-700">
+                          Turks Islander Details
+                        </h4>
+                      </div>
+
+                      <input
+                        {...register('statusCardNumber')}
+                        className="input"
+                        placeholder="Status Card Number"
+                      />
+
+                      <input
+                        type="date"
+                        {...register('statusCardDate')}
+                        className="input"
+                        placeholder="Date Issued"
+                      />
+                    </>
+                  )}
+
+                  {/* ================= NATURALIZED ================= */}
+                  {statusNaturalized && (
+                    <>
+                      <div className="col-span-2 mt-4">
+                        <h4 className="font-semibold text-gray-700">
+                          Naturalization Details
+                        </h4>
+                      </div>
+
+                      <input
+                        {...register('certNumber')}
+                        className="input"
+                        placeholder="Certificate Number"
+                      />
+
+                      <input
+                        type="date"
+                        {...register('certDate')}
+                        className="input"
+                        placeholder="Certificate Date"
+                      />
+                    </>
+                  )}
+
+                  {/* ================= PRC ================= */}
+                  {statusPRC && (
+                    <>
+                      <div className="col-span-2 mt-4">
+                        <h4 className="font-semibold text-gray-700">
+                          PRC Details
+                        </h4>
+                      </div>
+
+                      <input
+                        {...register('prcNumber')}
+                        className="input"
+                        placeholder="PRC Number"
+                      />
+
+                      <input
+                        type="date"
+                        {...register('prcDate')}
+                        className="input"
+                        placeholder="PRC Date"
+                      />
+                    </>
+                  )}
+
+                  {/* ================= WORK PERMIT ================= */}
+                  {statusWorkPermit && (
+                    <>
+                      <div className="col-span-2 mt-4">
+                        <h4 className="font-semibold text-gray-700">
+                          Work Permit Details
+                        </h4>
+                      </div>
+
+                      <input
+                        {...register('workPermitRef')}
+                        className="input"
+                        placeholder="Work Permit Reference"
+                      />
+
+                      <input
+                        type="date"
+                        {...register('workPermitExpiry')}
+                        className="input"
+                        placeholder="Work Permit Expiry"
+                      />
+                    </>
+                  )}
 
                 <input
                   {...register('nibNumber', { required: false })}
@@ -467,15 +602,20 @@ export default function FinanceApplication() {
                   className="input"
                   placeholder="TCI Driver's License Number (if applicable)"
                 />
+              <div className="flex flex-col">
+                <label className="text-sm font-semibold text-gray-800 mb-1">
+                  Driver’s License Expiry Date
+                </label>
+
                 <input
                   type="date"
-                  {...register('driverLicenseExpiry', { required: false })}
+                  {...register('driverLicenseExpiry')}
                   className="input"
-                  placeholder="Driver License Expiry Date (if applicable)"
                 />
               </div>
-            </section>
-          )}
+            </div>
+          </section>
+         )}
 
           {/* STEP 2: FINANCIAL INFORMATION */}
           {currentStep === 2 && (
